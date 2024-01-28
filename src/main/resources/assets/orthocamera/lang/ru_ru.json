@@ -1,0 +1,19 @@
+{
+  "modmenu.summaryTranslation.orthocamera": "ОртоКамера",
+  "modmenu.descriptionTranslation.orthocamera": "Переключаемый ортографический вид",
+  "orthocamera": "OrthoCamera",
+  "orthocamera.key.toggle": "Переключить Ортографическую Камеру",
+  "orthocamera.key.scale_increase": "Увеличить масштаб",
+  "orthocamera.key.scale_decrease": "Уменьшить масштаб",
+  "orthocamera.key.options": "Открыть настройки",
+  "orthocamera.enabled": "Ортографическая Камера Включена",
+  "orthocamera.disabled": "Ортографическая Камера Выключена",
+  "orthocamera.scale": "OrthoCamera Масштаб: x: %s | y: %s",
+  "orthocamera.config.enabled": "Включено: %s",
+  "orthocamera.config.save_enabled_state": "Сохранять Включенное Состояние: %s",
+  "orthocamera.config.scale_x": "Масштаб X: %s",
+  "orthocamera.config.scale_y": "Масштаб Y: %s",
+  "orthocamera.config.min_distance": "Минимальная Дистанция: %s",
+  "orthocamera.config.max_distance": "Максимальная Дистанция: %s",
+  "orthocamera.reset_config": "Сбросить конфигурацию"
+}

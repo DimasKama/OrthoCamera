@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "orthocamera",
+  "version": "${version}",
+  "name": "OrthoCamera",
+  "description": "Toggleable orthographic view",
+  "authors": [
+    "DimasKama"
+  ],
+  "contact": {
+    "sources": "https://github.com/DimasKama/OrthoCamera"
+  },
+  "license": [
+    "MIT"
+  ],
+  "icon": "assets/orthocamera/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.dimaskama.orthocamera.client.OrthoCamera"
+    ],
+    "modmenu": [
+      "com.dimaskama.orthocamera.integration.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "orthocamera.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": ">=${minecraft_version}"
+  }
+}

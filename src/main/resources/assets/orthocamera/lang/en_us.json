@@ -1,0 +1,19 @@
+{
+  "modmenu.summaryTranslation.orthocamera": "OrthoCamera",
+  "modmenu.descriptionTranslation.orthocamera": "Toggleable orthographic view",
+  "orthocamera": "OrthoCamera",
+  "orthocamera.key.toggle": "Toggle Orthographic Camera",
+  "orthocamera.key.scale_increase": "Increase scale",
+  "orthocamera.key.scale_decrease": "Decrease scale",
+  "orthocamera.key.options": "Open Options",
+  "orthocamera.enabled": "Orthographic Camera Enabled",
+  "orthocamera.disabled": "Orthographic Camera Disabled",
+  "orthocamera.scale": "OrthoCamera Scale: x: %s | y: %s",
+  "orthocamera.config.enabled": "Enabled: %s",
+  "orthocamera.config.save_enabled_state": "Save Enabled State: %s",
+  "orthocamera.config.scale_x": "X Scale: %s",
+  "orthocamera.config.scale_y": "Y Scale: %s",
+  "orthocamera.config.min_distance": "Minimal Distance: %s",
+  "orthocamera.config.max_distance": "Maximum Distance: %s",
+  "orthocamera.reset_config": "Reset Config"
+}
