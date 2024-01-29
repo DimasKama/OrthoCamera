@@ -2,8 +2,6 @@ package com.dimaskama.orthocamera.client.config;
 
 import net.minecraft.util.math.MathHelper;
 
-import java.lang.reflect.Field;
-
 public class ModConfig extends JsonConfig {
     public static final float MIN_SCALE = 0.01F;
     public static final float MAX_SCALE = 10000.0F;
@@ -29,16 +27,6 @@ public class ModConfig extends JsonConfig {
 
     public boolean isDirty() {
         return dirty;
-    }
-
-    public void reset() {
-        ModConfig m = new ModConfig(getPath(), getDefaultPath());
-        m.tryLoadDefault();
-        for (Field field : ModConfig.class.getDeclaredFields()) {
-            try {
-                field.set(this, field.get(m));
-            } catch (IllegalAccessException ignored) {}
-        }
     }
 
     public void tick() {

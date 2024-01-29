@@ -46,7 +46,7 @@ public abstract class JsonConfig implements Config {
             try {
                 saveWithoutCatch();
             } catch (IOException e) {
-                OrthoCamera.LOGGER.warn("Exception occurred while writing new config. " + e);
+                OrthoCamera.LOGGER.warn("Exception occurred while writing new config. ", e);
             }
         } else {
             load(file);
@@ -66,7 +66,7 @@ public abstract class JsonConfig implements Config {
         try (FileReader f = new FileReader(file)) {
             deserialize(JsonParser.parseReader(f));
         } catch (Exception e) {
-            OrthoCamera.LOGGER.warn("Exception occurred while reading config. " + e);
+            OrthoCamera.LOGGER.warn("Exception occurred while reading config. ", e);
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class JsonConfig implements Config {
             saveWithoutCatch();
             if (log) OrthoCamera.LOGGER.info("Config saved: " + getPath());
         } catch (IOException e) {
-            OrthoCamera.LOGGER.warn("Exception occurred while saving config. " + e);
+            OrthoCamera.LOGGER.warn("Exception occurred while saving config. ", e);
         }
     }
 
@@ -102,5 +102,19 @@ public abstract class JsonConfig implements Config {
 
     protected JsonElement serialize() {
         return GSON.toJsonTree(this);
+    }
+
+    public void reset() {
+        try {
+            JsonConfig m = getClass().getConstructor(String.class, String.class).newInstance(getPath(), getDefaultPath());
+            m.tryLoadDefault();
+            for (Field field : getClass().getDeclaredFields()) {
+                try {
+                    field.set(this, field.get(m));
+                } catch (IllegalAccessException ignored) {}
+            }
+        } catch (Exception e) {
+            OrthoCamera.LOGGER.error("Can't call config constructor. ", e);
+        }
     }
 }

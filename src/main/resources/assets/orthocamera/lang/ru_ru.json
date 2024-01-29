@@ -8,7 +8,7 @@
   "orthocamera.key.options": "Открыть настройки",
   "orthocamera.enabled": "Ортографическая Камера Включена",
   "orthocamera.disabled": "Ортографическая Камера Выключена",
-  "orthocamera.scale": "OrthoCamera Масштаб: x: %s | y: %s",
+  "orthocamera.scale": "OrthoCamera Масштаб: X: %s | Y: %s",
   "orthocamera.config.enabled": "Включено: %s",
   "orthocamera.config.save_enabled_state": "Сохранять Включенное Состояние: %s",
   "orthocamera.config.scale_x": "Масштаб X: %s",

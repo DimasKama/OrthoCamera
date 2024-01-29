@@ -8,12 +8,12 @@
   "orthocamera.key.options": "Open Options",
   "orthocamera.enabled": "Orthographic Camera Enabled",
   "orthocamera.disabled": "Orthographic Camera Disabled",
-  "orthocamera.scale": "OrthoCamera Scale: x: %s | y: %s",
+  "orthocamera.scale": "OrthoCamera Scale: X: %s | Y: %s",
   "orthocamera.config.enabled": "Enabled: %s",
   "orthocamera.config.save_enabled_state": "Save Enabled State: %s",
   "orthocamera.config.scale_x": "X Scale: %s",
   "orthocamera.config.scale_y": "Y Scale: %s",
-  "orthocamera.config.min_distance": "Minimal Distance: %s",
+  "orthocamera.config.min_distance": "Minimum Distance: %s",
   "orthocamera.config.max_distance": "Maximum Distance: %s",
   "orthocamera.reset_config": "Reset Config"
 }

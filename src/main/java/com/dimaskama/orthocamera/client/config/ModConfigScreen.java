@@ -39,13 +39,13 @@ public class ModConfigScreen extends Screen {
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
                 "scale_x", config.scale_x,
-                50.0F, 0.05F,
+                100.0F, 1.0F,
                 v -> config.scale_x = v
         ));
         addDrawableChild(new ConfigSliderWidget(
                 rightX, y, "scale_y",
                 config.scale_y,
-                50.0F, 0.05F,
+                100.0F, 1.0F,
                 v -> config.scale_y = v)
         );
         y += 30;
@@ -98,8 +98,8 @@ public class ModConfigScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context) {
-        if (parent == null) {
-            context.fill(0, 0, width, height, 0x071010FF);
+        if (parent == null && client.world != null) {
+            context.fill(0, 0, width, height, 0x50101010);
         } else {
             renderBackgroundTexture(context);
         }

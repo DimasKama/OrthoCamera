@@ -35,10 +35,8 @@ public class OrthoCamera implements ClientModInitializer {
         KeyBindingHelper.registerKeyBinding(SCALE_INCREASE_KEY);
         KeyBindingHelper.registerKeyBinding(SCALE_DECREASE_KEY);
         KeyBindingHelper.registerKeyBinding(OPEN_OPTIONS_KEY);
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            CONFIG.tick();
-            handleInput(client);
-        });
+        ClientTickEvents.START_CLIENT_TICK.register(c -> CONFIG.tick());
+        ClientTickEvents.END_CLIENT_TICK.register(this::handleInput);
         ClientLifecycleEvents.CLIENT_STOPPING.register(this::onClientStopping);
     }
 
@@ -46,6 +44,7 @@ public class OrthoCamera implements ClientModInitializer {
         boolean messageSent = false;
         while (TOGGLE_KEY.wasPressed()) {
             CONFIG.enabled = !CONFIG.enabled;
+            CONFIG.setDirty(true);
             client.getMessageHandler().onGameMessage(
                     CONFIG.enabled ? ENABLED_TEXT : DISABLED_TEXT,
                     true
@@ -58,6 +57,7 @@ public class OrthoCamera implements ClientModInitializer {
             if (on) {
                 CONFIG.setScaleX(CONFIG.scale_x * SCALE_MUL_INTERVAL);
                 CONFIG.setScaleY(CONFIG.scale_y * SCALE_MUL_INTERVAL);
+                CONFIG.setDirty(true);
                 scaleChanged = true;
             }
         }
@@ -65,6 +65,7 @@ public class OrthoCamera implements ClientModInitializer {
             if (on) {
                 CONFIG.setScaleX(CONFIG.scale_x / SCALE_MUL_INTERVAL);
                 CONFIG.setScaleY(CONFIG.scale_y / SCALE_MUL_INTERVAL);
+                CONFIG.setDirty(true);
                 scaleChanged = true;
             }
         }
