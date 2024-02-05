@@ -10,9 +10,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Matrix4f;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class OrthoCamera implements ClientModInitializer {
@@ -102,9 +102,9 @@ public class OrthoCamera implements ClientModInitializer {
         float width = Math.max(minScale, CONFIG.getScaleX(delta)
                 * client.getWindow().getFramebufferWidth() / client.getWindow().getFramebufferHeight());
         float height = Math.max(minScale, CONFIG.getScaleY(delta));
-        return new Matrix4f().setOrtho(
+        return Matrix4f.projectionMatrix(
                 -width, width,
-                -height, height,
+                height, -height,
                 CONFIG.min_distance, CONFIG.max_distance
         );
     }

@@ -1,10 +1,10 @@
 package com.dimaskama.orthocamera.client.config;
 
 import com.dimaskama.orthocamera.client.OrthoCamera;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -25,16 +25,16 @@ public class ModConfigScreen extends Screen {
         int leftX = ((width - 20) >>> 1) - optionWidth;
         int rightX = (width + 20) >>> 1;
         int y = 120;
-        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
+        addDrawableChild(new ButtonWidget(leftX, y, optionWidth, 20, Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
             config.enabled = !config.enabled;
             config.setDirty(true);
             button.setMessage(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)));
-        }).position(leftX, y).build());
-        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)), button -> {
+        }));
+        addDrawableChild(new ButtonWidget(rightX, y, optionWidth, 20, Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)), button -> {
             config.save_enabled_state = !config.save_enabled_state;
             config.setDirty(true);
             button.setMessage(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)));
-        }).position(rightX, y).build());
+        }));
         y += 30;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
@@ -62,29 +62,35 @@ public class ModConfigScreen extends Screen {
                 v -> config.max_distance = v
         ));
 
-        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.reset_config"), button -> {
+        addDrawableChild(new ButtonWidget(leftX, height - 40, 150, 20, Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
             clearAndInit();
-        }).position(leftX, height - 40).build());
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close())
-                .position(rightX, height - 40).build());
+        }));
+        addDrawableChild(new ButtonWidget(rightX, height - 40, 150, 20, ScreenTexts.DONE, button -> close()));
     }
 
     private Text textOfBool(boolean b) {
         return b ? ScreenTexts.ON : ScreenTexts.OFF;
     }
 
+//    @Override
+//    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+//        renderBackground(context);
+//        super.render(context, mouseX, mouseY, delta);
+//        context.drawCenteredTextWithShadow(
+//                textRenderer,
+//                title,
+//                width >>> 1,
+//                10,
+//                0xFFFFFFFF
+//        );
+//    }
+
+
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context);
-        super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(
-                textRenderer,
-                title,
-                width >>> 1,
-                10,
-                0xFFFFFFFF
-        );
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackground(matrices);
+        super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
@@ -97,11 +103,11 @@ public class ModConfigScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(DrawContext context) {
+    public void renderBackground(MatrixStack matrices) {
         if (parent == null && client.world != null) {
-            context.fill(0, 0, width, height, 0x50101010);
+            fill(matrices, 0, 0, width, height, 0x50101010);
         } else {
-            renderBackgroundTexture(context);
+            renderBackgroundTexture(0);
         }
     }
 
