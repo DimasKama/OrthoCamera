@@ -1,10 +1,10 @@
 package com.dimaskama.orthocamera.client.config;
 
 import com.dimaskama.orthocamera.client.OrthoCamera;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -75,12 +75,13 @@ public class ModConfigScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context);
-        super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackground(matrices);
+        super.render(matrices, mouseX, mouseY, delta);
+        drawCenteredTextWithShadow(
+                matrices,
                 textRenderer,
-                title,
+                title.asOrderedText(),
                 width >>> 1,
                 10,
                 0xFFFFFFFF
@@ -97,11 +98,11 @@ public class ModConfigScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(DrawContext context) {
+    public void renderBackground(MatrixStack matrices) {
         if (parent == null && client.world != null) {
-            context.fill(0, 0, width, height, 0x50101010);
+            fill(matrices, 0, 0, width, height, 0x50101010);
         } else {
-            renderBackgroundTexture(context);
+            renderBackgroundTexture(0);
         }
     }
 
