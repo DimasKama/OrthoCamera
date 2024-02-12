@@ -24,7 +24,7 @@ public class ModConfigScreen extends Screen {
         int optionWidth = 150;
         int leftX = ((width - 20) >>> 1) - optionWidth;
         int rightX = (width + 20) >>> 1;
-        int y = 120;
+        int y = 60;
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
             config.enabled = !config.enabled;
             config.setDirty(true);
@@ -60,6 +60,37 @@ public class ModConfigScreen extends Screen {
                 "max_distance", config.max_distance,
                 1000.0F, 0.0F,
                 v -> config.max_distance = v
+        ));
+        y += 30;
+        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)), button -> {
+            config.setFixed(!config.fixed);
+            button.setMessage(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)));
+        }).dimensions(leftX, y, optionWidth + 20 + optionWidth, 20).build());
+        y += 30;
+        addDrawableChild(new ConfigSliderWidget(
+                leftX, y,
+                "fixed_yaw", config.fixed_yaw,
+                360.0F, 0.0F,
+                v -> config.fixed_yaw = v
+        ));
+        addDrawableChild(new ConfigSliderWidget(
+                rightX, y,
+                "fixed_pitch", config.fixed_pitch,
+                180.0F, -90.0F,
+                v -> config.fixed_pitch = v
+        ));
+        y += 30;
+        addDrawableChild(new ConfigSliderWidget(
+                leftX, y,
+                "fixed_rotate_speed_y", config.fixed_rotate_speed_y,
+                90.0F, 0.0F,
+                v -> config.fixed_rotate_speed_y = v
+        ));
+        addDrawableChild(new ConfigSliderWidget(
+                rightX, y,
+                "fixed_rotate_speed_x", config.fixed_rotate_speed_x,
+                90.0F, 0.0F,
+                v -> config.fixed_rotate_speed_x = v
         ));
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.reset_config"), button -> {
