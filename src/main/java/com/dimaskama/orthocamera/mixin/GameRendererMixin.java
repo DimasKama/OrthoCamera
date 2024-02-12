@@ -5,7 +5,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.VertexSorter;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.util.math.RotationAxis;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -43,5 +45,37 @@ public abstract class GameRendererMixin {
             return mat;
         }
         return projMat;
+    }
+
+    @ModifyArg(
+            method = "renderWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V",
+                    ordinal = 2
+            ),
+            index = 0
+    )
+    private Quaternionf modifyPitch(Quaternionf quaternion, @Local(argsOnly = true) float tickDelta) {
+        if (OrthoCamera.isEnabled() && OrthoCamera.CONFIG.fixed) {
+            return RotationAxis.POSITIVE_X.rotationDegrees(OrthoCamera.CONFIG.getFixedPitch(tickDelta));
+        }
+        return quaternion;
+    }
+
+    @ModifyArg(
+            method = "renderWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V",
+                    ordinal = 3
+            ),
+            index = 0
+    )
+    private Quaternionf modifyYaw(Quaternionf quaternion, @Local(argsOnly = true) float tickDelta) {
+        if (OrthoCamera.isEnabled() && OrthoCamera.CONFIG.fixed) {
+            return RotationAxis.POSITIVE_Y.rotationDegrees(OrthoCamera.CONFIG.getFixedYaw(tickDelta));
+        }
+        return quaternion;
     }
 }

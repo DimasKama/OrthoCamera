@@ -23,8 +23,15 @@ public class OrthoCamera implements ClientModInitializer {
     private static final KeyBinding SCALE_INCREASE_KEY = createKeybinding("scale_increase", GLFW.GLFW_KEY_KP_SUBTRACT);
     private static final KeyBinding SCALE_DECREASE_KEY = createKeybinding("scale_decrease", GLFW.GLFW_KEY_KP_ADD);
     private static final KeyBinding OPEN_OPTIONS_KEY = createKeybinding("options", -1);
+    private static final KeyBinding FIX_CAMERA_KEY = createKeybinding("fix_camera", GLFW.GLFW_KEY_KP_MULTIPLY);
+    private static final KeyBinding FIXED_CAMERA_ROTATE_UP_KEY = createKeybinding("fixed_camera_rotate_up", -1);
+    private static final KeyBinding FIXED_CAMERA_ROTATE_DOWN_KEY = createKeybinding("fixed_camera_rotate_down", -1);
+    private static final KeyBinding FIXED_CAMERA_ROTATE_LEFT_KEY = createKeybinding("fixed_camera_rotate_left", -1);
+    private static final KeyBinding FIXED_CAMERA_ROTATE_RIGHT_KEY = createKeybinding("fixed_camera_rotate_right", -1);
     private static final Text ENABLED_TEXT = Text.translatable("orthocamera.enabled");
     private static final Text DISABLED_TEXT = Text.translatable("orthocamera.disabled");
+    private static final Text FIXED_TEXT = Text.translatable("orthocamera.fixed");
+    private static final Text UNFIXED_TEXT = Text.translatable("orthocamera.unfixed");
     private static final float SCALE_MUL_INTERVAL = 1.1F;
 
     @Override
@@ -35,6 +42,11 @@ public class OrthoCamera implements ClientModInitializer {
         KeyBindingHelper.registerKeyBinding(SCALE_INCREASE_KEY);
         KeyBindingHelper.registerKeyBinding(SCALE_DECREASE_KEY);
         KeyBindingHelper.registerKeyBinding(OPEN_OPTIONS_KEY);
+        KeyBindingHelper.registerKeyBinding(FIX_CAMERA_KEY);
+        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_UP_KEY);
+        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_DOWN_KEY);
+        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_LEFT_KEY);
+        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_RIGHT_KEY);
         ClientTickEvents.START_CLIENT_TICK.register(c -> CONFIG.tick());
         ClientTickEvents.END_CLIENT_TICK.register(this::handleInput);
         ClientLifecycleEvents.CLIENT_STOPPING.register(this::onClientStopping);
@@ -77,6 +89,27 @@ public class OrthoCamera implements ClientModInitializer {
                     ),
                     true
             );
+            messageSent = true;
+        }
+        boolean fixPressed = false;
+        while (FIX_CAMERA_KEY.wasPressed()) {
+            fixPressed = true;
+            CONFIG.setFixed(!CONFIG.fixed);
+        }
+        if (!messageSent && fixPressed) {
+            client.getMessageHandler().onGameMessage(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT, true);
+        }
+        while (FIXED_CAMERA_ROTATE_LEFT_KEY.wasPressed()) {
+            CONFIG.setFixedYaw(CONFIG.fixed_yaw + CONFIG.fixed_rotate_speed_y);
+        }
+        while (FIXED_CAMERA_ROTATE_RIGHT_KEY.wasPressed()) {
+            CONFIG.setFixedYaw(CONFIG.fixed_yaw - CONFIG.fixed_rotate_speed_y);
+        }
+        while (FIXED_CAMERA_ROTATE_UP_KEY.wasPressed()) {
+            CONFIG.setFixedPitch(CONFIG.fixed_pitch + CONFIG.fixed_rotate_speed_x);
+        }
+        while (FIXED_CAMERA_ROTATE_DOWN_KEY.wasPressed()) {
+            CONFIG.setFixedPitch(CONFIG.fixed_pitch - CONFIG.fixed_rotate_speed_x);
         }
         boolean openScreen = false;
         while (OPEN_OPTIONS_KEY.wasPressed()) {
