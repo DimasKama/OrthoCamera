@@ -24,7 +24,7 @@ public class ModConfigScreen extends Screen {
         int optionWidth = 150;
         int leftX = ((width - 20) >>> 1) - optionWidth;
         int rightX = (width + 20) >>> 1;
-        int y = 120;
+        int y = 60;
         addDrawableChild(new ButtonWidget(leftX, y, optionWidth, 20, Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
             config.enabled = !config.enabled;
             config.setDirty(true);
@@ -61,6 +61,37 @@ public class ModConfigScreen extends Screen {
                 1000.0F, 0.0F,
                 v -> config.max_distance = v
         ));
+        y += 30;
+        addDrawableChild(new ButtonWidget(leftX, y, optionWidth + 20 + optionWidth, 20, Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)), button -> {
+            config.setFixed(!config.fixed);
+            button.setMessage(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)));
+        }));
+        y += 30;
+        addDrawableChild(new ConfigSliderWidget(
+                leftX, y,
+                "fixed_yaw", config.fixed_yaw,
+                360.0F, 0.0F,
+                v -> config.fixed_yaw = v
+        ));
+        addDrawableChild(new ConfigSliderWidget(
+                rightX, y,
+                "fixed_pitch", config.fixed_pitch,
+                180.0F, -90.0F,
+                v -> config.fixed_pitch = v
+        ));
+        y += 30;
+        addDrawableChild(new ConfigSliderWidget(
+                leftX, y,
+                "fixed_rotate_speed_y", config.fixed_rotate_speed_y,
+                90.0F, 0.0F,
+                v -> config.fixed_rotate_speed_y = v
+        ));
+        addDrawableChild(new ConfigSliderWidget(
+                rightX, y,
+                "fixed_rotate_speed_x", config.fixed_rotate_speed_x,
+                90.0F, 0.0F,
+                v -> config.fixed_rotate_speed_x = v
+        ));
 
         addDrawableChild(new ButtonWidget(leftX, height - 40, 150, 20, Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
@@ -72,20 +103,6 @@ public class ModConfigScreen extends Screen {
     private Text textOfBool(boolean b) {
         return b ? ScreenTexts.ON : ScreenTexts.OFF;
     }
-
-//    @Override
-//    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-//        renderBackground(context);
-//        super.render(context, mouseX, mouseY, delta);
-//        context.drawCenteredTextWithShadow(
-//                textRenderer,
-//                title,
-//                width >>> 1,
-//                10,
-//                0xFFFFFFFF
-//        );
-//    }
-
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Frustum.class)
-public class FrustumMixin {
+public abstract class FrustumMixin {
     @Inject(
             method = "method_38557",
             at = @At("HEAD"),
