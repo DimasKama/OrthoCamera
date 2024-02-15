@@ -28,7 +28,11 @@ There are also 3 hotkeys for:
 - Fix camera
 - Rotate fixed camera
 
+Fixed camera demonstration:
+
+![fix_preview](preview/fix_preview.gif)
+
 ## Compatibility
 - Using **Sodium** mod, you have to disable "Use Block Face Culling" in "Performance" tab. Otherwise, some block faces will not render with big scale
 - However, **Nvidium** mod force enables this sodium feature. So you have to **disable Nvidium** mod, if you have it. 
-- After disabling, you probably need to press F3 + T to apply change
+- After disabling, you probably need to press **F3 + T** to apply change
