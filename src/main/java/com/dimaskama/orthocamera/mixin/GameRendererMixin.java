@@ -41,7 +41,7 @@ public abstract class GameRendererMixin {
     private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) float tickDelta) {
         if (OrthoCamera.isEnabled()) {
             Matrix4f mat = OrthoCamera.createOrthoMatrix(tickDelta, 0.0F);
-            RenderSystem.setProjectionMatrix(mat, VertexSorter.BY_DISTANCE);
+            RenderSystem.setProjectionMatrix(mat, VertexSorter.BY_Z);
             return mat;
         }
         return projMat;
