@@ -21,7 +21,7 @@ You can open config screen from ModMenu or by the hotkey. You can configure:
 - Fixed camera rotation
 - Fixed camera rotation speed (when rotating using hotkeys)
 
-There are also 3 hotkeys for:
+There are also 8 hotkeys for:
 - Toggle orthographic view
 - Increase scale
 - Decrease scale
