@@ -100,7 +100,9 @@ public class ModConfig extends JsonConfig {
             Entity entity = MinecraftClient.getInstance().getCameraEntity();
             if (entity != null) {
                 setFixedYaw(entity.getYaw() + 180);
+                prevFixedYaw = fixed_yaw;
                 setFixedPitch(entity.getPitch());
+                prevFixedPitch = fixed_pitch;
             }
             setDirty(true);
         }
