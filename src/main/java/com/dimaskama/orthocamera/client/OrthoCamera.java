@@ -99,16 +99,16 @@ public class OrthoCamera implements ClientModInitializer {
         if (!messageSent && fixPressed) {
             client.getMessageHandler().onGameMessage(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT, true);
         }
-        while (FIXED_CAMERA_ROTATE_LEFT_KEY.wasPressed()) {
+        if (FIXED_CAMERA_ROTATE_LEFT_KEY.isPressed()) {
             CONFIG.setFixedYaw(CONFIG.fixed_yaw + CONFIG.fixed_rotate_speed_y);
         }
-        while (FIXED_CAMERA_ROTATE_RIGHT_KEY.wasPressed()) {
+        if (FIXED_CAMERA_ROTATE_RIGHT_KEY.isPressed()) {
             CONFIG.setFixedYaw(CONFIG.fixed_yaw - CONFIG.fixed_rotate_speed_y);
         }
-        while (FIXED_CAMERA_ROTATE_UP_KEY.wasPressed()) {
+        if (FIXED_CAMERA_ROTATE_UP_KEY.isPressed()) {
             CONFIG.setFixedPitch(CONFIG.fixed_pitch + CONFIG.fixed_rotate_speed_x);
         }
-        while (FIXED_CAMERA_ROTATE_DOWN_KEY.wasPressed()) {
+        if (FIXED_CAMERA_ROTATE_DOWN_KEY.isPressed()) {
             CONFIG.setFixedPitch(CONFIG.fixed_pitch - CONFIG.fixed_rotate_speed_x);
         }
         boolean openScreen = false;
