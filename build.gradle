@@ -63,7 +63,6 @@ modrinth {
     token = project.modrinth_forminotaur_token
     projectId = "orthocamera"
     versionNumber = project.mod_version
-    versionName = "${project.archives_base_name} ${versionNumber}"
     versionType = "release" // This is the default -- can also be `beta` or `alpha`
     uploadFile = remapJar
     gameVersions = ["1.19.2"] // Must be an array, even with only one version
