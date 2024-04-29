@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -34,7 +34,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 tasks.withType(JavaCompile).configureEach {
 
     it.options.encoding = "UTF-8"
@@ -74,3 +74,5 @@ modrinth {
         optional.project "modmenu"
     }
 }
+
+System.out.println(changelog)

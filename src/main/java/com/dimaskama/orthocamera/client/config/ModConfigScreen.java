@@ -107,7 +107,6 @@ public class ModConfigScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(
                 textRenderer,
@@ -125,15 +124,6 @@ public class ModConfigScreen extends Screen {
             config.setDirty(false);
         }
         client.setScreen(parent);
-    }
-
-    @Override
-    public void renderBackground(DrawContext context) {
-        if (parent == null && client.world != null) {
-            context.fill(0, 0, width, height, 0x50101010);
-        } else {
-            renderBackgroundTexture(context);
-        }
     }
 
     private class ConfigSliderWidget extends SliderWidget {
