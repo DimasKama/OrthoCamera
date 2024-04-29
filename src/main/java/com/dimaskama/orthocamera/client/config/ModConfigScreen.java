@@ -21,20 +21,20 @@ public class ModConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        int optionWidth = 150;
+        int optionWidth = 180;
         int leftX = ((width - 20) >>> 1) - optionWidth;
         int rightX = (width + 20) >>> 1;
-        int y = 60;
+        int y = 40;
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
             config.enabled = !config.enabled;
             config.setDirty(true);
             button.setMessage(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)));
-        }).position(leftX, y).build());
+        }).dimensions(leftX, y, optionWidth, 20).build());
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)), button -> {
             config.save_enabled_state = !config.save_enabled_state;
             config.setDirty(true);
             button.setMessage(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)));
-        }).position(rightX, y).build());
+        }).dimensions(rightX, y, optionWidth, 20).build());
         y += 30;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
@@ -96,9 +96,9 @@ public class ModConfigScreen extends Screen {
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
             clearAndInit();
-        }).position(leftX, height - 40).build());
+        }).dimensions(leftX, height - 40, optionWidth, 20).build());
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close())
-                .position(rightX, height - 40).build());
+                .dimensions(rightX, height - 40, optionWidth, 20).build());
     }
 
     private Text textOfBool(boolean b) {
@@ -150,7 +150,7 @@ public class ModConfigScreen extends Screen {
                 float multiplyFactor, float addFactor,
                 Consumer<Float> consumer
         ) {
-            super(x, y, 150, 20, ScreenTexts.EMPTY, (value - addFactor) / multiplyFactor);
+            super(x, y, 180, 20, ScreenTexts.EMPTY, (value - addFactor) / multiplyFactor);
             this.translationKey = "orthocamera.config." + name;
             this.multiplyFactor = multiplyFactor;
             this.addFactor = addFactor;
