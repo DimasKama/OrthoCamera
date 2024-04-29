@@ -35,7 +35,7 @@ public class ModConfigScreen extends Screen {
             config.setDirty(true);
             button.setMessage(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)));
         }).dimensions(rightX, y, optionWidth, 20).build());
-        y += 30;
+        y += 25;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
                 "scale_x", config.scale_x,
@@ -48,7 +48,7 @@ public class ModConfigScreen extends Screen {
                 100.0F, 1.0F,
                 v -> config.scale_y = v)
         );
-        y += 30;
+        y += 25;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
                 "min_distance", config.min_distance,
@@ -61,12 +61,12 @@ public class ModConfigScreen extends Screen {
                 1000.0F, 0.0F,
                 v -> config.max_distance = v
         ));
-        y += 30;
+        y += 25;
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)), button -> {
             config.setFixed(!config.fixed);
             button.setMessage(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)));
         }).dimensions(leftX, y, optionWidth + 20 + optionWidth, 20).build());
-        y += 30;
+        y += 25;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
                 "fixed_yaw", config.fixed_yaw,
@@ -79,7 +79,7 @@ public class ModConfigScreen extends Screen {
                 180.0F, -90.0F,
                 v -> config.fixed_pitch = v
         ));
-        y += 30;
+        y += 25;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
                 "fixed_rotate_speed_y", config.fixed_rotate_speed_y,

@@ -1,6 +1,6 @@
 plugins {
     id 'fabric-loom' version '1.5-SNAPSHOT'
-    id 'maven-publish'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
@@ -59,14 +59,18 @@ jar {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-
+modrinth {
+    token = project.modrinth_forminotaur_token
+    projectId = "orthocamera"
+    versionNumber = "${project.archives_base_name} ${project.mod_version}"
+    versionType = "release" // This is the default -- can also be `beta` or `alpha`
+    uploadFile = remapJar
+    gameVersions = ["1.20.1", "1.20.2", "1.20.3", "1.20.4"] // Must be an array, even with only one version
+    dependencies { // A special DSL for creating dependencies
+        // scope.type
+        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
+        // The type can either be `project` or `version`
+        required.project "fabric-api"
+        optional.project "modmenu"
     }
 }
