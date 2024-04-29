@@ -64,6 +64,7 @@ modrinth {
     projectId = "orthocamera"
     versionNumber = project.mod_version
     versionType = "release" // This is the default -- can also be `beta` or `alpha`
+    changelog = project.changelog
     uploadFile = remapJar
     gameVersions = ["1.20.1", "1.20.2", "1.20.3", "1.20.4"] // Must be an array, even with only one version
     dependencies { // A special DSL for creating dependencies
@@ -74,5 +75,3 @@ modrinth {
         optional.project "modmenu"
     }
 }
-
-System.out.println(changelog)
