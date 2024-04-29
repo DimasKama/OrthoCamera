@@ -21,10 +21,10 @@ public class ModConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        int optionWidth = 150;
+        int optionWidth = 180;
         int leftX = ((width - 20) >>> 1) - optionWidth;
         int rightX = (width + 20) >>> 1;
-        int y = 60;
+        int y = 40;
         addDrawableChild(new ButtonWidget(leftX, y, optionWidth, 20, Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
             config.enabled = !config.enabled;
             config.setDirty(true);
@@ -93,11 +93,11 @@ public class ModConfigScreen extends Screen {
                 v -> config.fixed_rotate_speed_x = v
         ));
 
-        addDrawableChild(new ButtonWidget(leftX, height - 40, 150, 20, Text.translatable("orthocamera.reset_config"), button -> {
+        addDrawableChild(new ButtonWidget(leftX, height - 40, optionWidth, 20, Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
             clearAndInit();
         }));
-        addDrawableChild(new ButtonWidget(rightX, height - 40, 150, 20, ScreenTexts.DONE, button -> close()));
+        addDrawableChild(new ButtonWidget(rightX, height - 40, optionWidth, 20, ScreenTexts.DONE, button -> close()));
     }
 
     private Text textOfBool(boolean b) {
@@ -142,7 +142,7 @@ public class ModConfigScreen extends Screen {
                 float multiplyFactor, float addFactor,
                 Consumer<Float> consumer
         ) {
-            super(x, y, 150, 20, ScreenTexts.EMPTY, (value - addFactor) / multiplyFactor);
+            super(x, y, 180, 20, ScreenTexts.EMPTY, (value - addFactor) / multiplyFactor);
             this.translationKey = "orthocamera.config." + name;
             this.multiplyFactor = multiplyFactor;
             this.addFactor = addFactor;
