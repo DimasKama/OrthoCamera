@@ -1,12 +1,15 @@
 package com.dimaskama.orthocamera.mixin;
 
 import com.dimaskama.orthocamera.client.OrthoCamera;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.VertexSorter;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -32,47 +35,36 @@ public abstract class GameRendererMixin {
             method = "renderWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/WorldRenderer;render(FJZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
+                    target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/render/RenderTickCounter;ZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
 
             ),
-            index = 7
+            index = 6
     )
-    private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) float tickDelta) {
+    private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled()) {
-            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickDelta, 0.0F);
+            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickDelta(false), 0.0F);
             RenderSystem.setProjectionMatrix(mat, VertexSorter.BY_Z);
             return mat;
         }
         return projMat;
     }
 
-    @ModifyArg(
+    @ModifyExpressionValue(
             method = "renderWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/joml/Matrix4f;rotationXYZ(FFF)Lorg/joml/Matrix4f;"
-            ),
-            index = 0
+                    target = "Lorg/joml/Quaternionf;conjugate(Lorg/joml/Quaternionf;)Lorg/joml/Quaternionf;"
+            )
     )
-    private float modifyPitch(float pitch, @Local(argsOnly = true) float tickDelta) {
+    private Quaternionf modifyRotation(Quaternionf original, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled() && OrthoCamera.CONFIG.fixed) {
-            return MathHelper.RADIANS_PER_DEGREE * OrthoCamera.CONFIG.getFixedPitch(tickDelta);
+            float delta = tickCounter.getTickDelta(false);
+            return original.rotationXYZ(
+                    OrthoCamera.CONFIG.getFixedPitch(delta) * MathHelper.RADIANS_PER_DEGREE,
+                    OrthoCamera.CONFIG.getFixedYaw(delta) * MathHelper.RADIANS_PER_DEGREE - MathHelper.PI,
+                    0.0F
+            );
         }
-        return pitch;
-    }
-
-    @ModifyArg(
-            method = "renderWorld",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lorg/joml/Matrix4f;rotationXYZ(FFF)Lorg/joml/Matrix4f;"
-            ),
-            index = 1
-    )
-    private float modifyYaw(float yaw, @Local(argsOnly = true) float tickDelta) {
-        if (OrthoCamera.isEnabled() && OrthoCamera.CONFIG.fixed) {
-            return MathHelper.RADIANS_PER_DEGREE * OrthoCamera.CONFIG.getFixedYaw(tickDelta);
-        }
-        return yaw;
+        return original;
     }
 }
