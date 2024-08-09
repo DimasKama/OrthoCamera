@@ -2,10 +2,12 @@ package com.dimaskama.orthocamera.client;
 
 import com.dimaskama.orthocamera.client.config.ModConfig;
 import com.dimaskama.orthocamera.client.config.ModConfigScreen;
+import com.dimaskama.orthocamera.integration.SodiumIntegration;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -34,6 +36,8 @@ public class OrthoCamera implements ClientModInitializer {
     private static final Text UNFIXED_TEXT = Text.translatable("orthocamera.unfixed");
     private static final float SCALE_MUL_INTERVAL = 1.1F;
 
+    private boolean sodiumPresent = false;
+
     @Override
     public void onInitializeClient() {
         CONFIG.loadOrCreate();
@@ -50,6 +54,7 @@ public class OrthoCamera implements ClientModInitializer {
         ClientTickEvents.START_CLIENT_TICK.register(c -> CONFIG.tick());
         ClientTickEvents.END_CLIENT_TICK.register(this::handleInput);
         ClientLifecycleEvents.CLIENT_STOPPING.register(this::onClientStopping);
+        sodiumPresent = FabricLoader.getInstance().getModContainer("sodium").isPresent();
     }
 
     private void handleInput(MinecraftClient client) {
@@ -62,6 +67,11 @@ public class OrthoCamera implements ClientModInitializer {
                     true
             );
             messageSent = true;
+
+            if (sodiumPresent) {
+                if (CONFIG.enabled) SodiumIntegration.on();
+                else SodiumIntegration.off();
+            }
         }
         boolean on = CONFIG.enabled;
         boolean scaleChanged = false;
