@@ -27,5 +27,6 @@
   "orthocamera.config.fixed_pitch": "Fixed camera pitch: %s",
   "orthocamera.config.fixed_rotate_speed_y": "Camera Y rotate speed: %s",
   "orthocamera.config.fixed_rotate_speed_x": "Camera X rotate speed: %s",
+  "orthocamera.config.auto_third_person": "Auto third person: %s",
   "orthocamera.reset_config": "Reset config"
 }

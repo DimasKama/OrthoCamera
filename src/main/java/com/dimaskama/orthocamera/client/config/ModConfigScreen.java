@@ -22,12 +22,11 @@ public class ModConfigScreen extends Screen {
     @Override
     protected void init() {
         int optionWidth = 180;
-        int leftX = ((width - 20) >>> 1) - optionWidth;
-        int rightX = (width + 20) >>> 1;
+        int leftX = ((width - 5) >>> 1) - optionWidth;
+        int rightX = (width + 5) >>> 1;
         int y = 40;
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)), button -> {
-            config.enabled = !config.enabled;
-            config.setDirty(true);
+            config.toggle();
             button.setMessage(Text.translatable("orthocamera.config.enabled", textOfBool(config.enabled)));
         }).dimensions(leftX, y, optionWidth, 20).build());
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.save_enabled_state", textOfBool(config.save_enabled_state)), button -> {
@@ -62,10 +61,15 @@ public class ModConfigScreen extends Screen {
                 v -> config.max_distance = v
         ));
         y += 25;
+        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.auto_third_person", textOfBool(config.auto_third_person)), button -> {
+            config.auto_third_person = !config.auto_third_person;
+            config.setDirty(true);
+            button.setMessage(Text.translatable("orthocamera.config.auto_third_person", textOfBool(config.auto_third_person)));
+        }).dimensions(leftX, y, optionWidth, 20).build());
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)), button -> {
             config.setFixed(!config.fixed);
             button.setMessage(Text.translatable("orthocamera.config.fixed", textOfBool(config.fixed)));
-        }).dimensions(leftX, y, optionWidth + 20 + optionWidth, 20).build());
+        }).dimensions(rightX, y, optionWidth, 20).build());
         y += 25;
         addDrawableChild(new ConfigSliderWidget(
                 leftX, y,
@@ -96,9 +100,9 @@ public class ModConfigScreen extends Screen {
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
             clearAndInit();
-        }).dimensions(leftX, height - 40, optionWidth, 20).build());
+        }).dimensions(leftX, height - 30, optionWidth, 20).build());
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> close())
-                .dimensions(rightX, height - 40, optionWidth, 20).build());
+                .dimensions(rightX, height - 30, optionWidth, 20).build());
     }
 
     private Text textOfBool(boolean b) {

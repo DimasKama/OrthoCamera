@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +34,6 @@ public class OrthoCamera implements ClientModInitializer {
     private static final Text UNFIXED_TEXT = Text.translatable("orthocamera.unfixed");
     private static final float SCALE_MUL_INTERVAL = 1.1F;
 
-    private Perspective prevPerspective;
-
     @Override
     public void onInitializeClient() {
         CONFIG.loadOrCreate();
@@ -58,18 +55,12 @@ public class OrthoCamera implements ClientModInitializer {
     private void handleInput(MinecraftClient client) {
         boolean messageSent = false;
         while (TOGGLE_KEY.wasPressed()) {
-            CONFIG.enabled = !CONFIG.enabled;
-            CONFIG.setDirty(true);
+            CONFIG.toggle();
             client.getMessageHandler().onGameMessage(
                     CONFIG.enabled ? ENABLED_TEXT : DISABLED_TEXT,
                     true
             );
             messageSent = true;
-
-            if (CONFIG.enabled) {
-                prevPerspective = client.options.getPerspective();
-                client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
-            } else client.options.setPerspective(prevPerspective);
         }
         boolean on = CONFIG.enabled;
         boolean scaleChanged = false;

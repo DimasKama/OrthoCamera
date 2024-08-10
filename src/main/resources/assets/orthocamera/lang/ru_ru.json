@@ -27,5 +27,6 @@
   "orthocamera.config.fixed_pitch": "Наклон фикс. камеры: %s",
   "orthocamera.config.fixed_rotate_speed_y": "Скорость поворота Y: %s",
   "orthocamera.config.fixed_rotate_speed_x": "Скорость поворота X: %s",
+  "orthocamera.config.auto_third_person": "Авто. вид от третьего лица: %s",
   "orthocamera.reset_config": "Сбросить конфигурацию"
 }

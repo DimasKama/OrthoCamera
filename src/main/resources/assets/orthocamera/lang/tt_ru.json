@@ -27,5 +27,6 @@
   "orthocamera.config.fixed_pitch": "Камера беркетү авышканлыгы: %s",
   "orthocamera.config.fixed_rotate_speed_y": "Y буенча әйләнү тизлеге: %s",
   "orthocamera.config.fixed_rotate_speed_x": "X буенча әйләнү тизлеге: %s",
+  "orthocamera.config.auto_third_person": "Автоматик өченче кеше күренеше: %s",
   "orthocamera.reset_config": "Көйләүләрне ташлау"
 }

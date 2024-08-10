@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(GameRenderer.class)
-public abstract class GameRendererMixin {
+abstract class GameRendererMixin {
     @ModifyArg(
             method = "renderWorld",
             at = @At(
