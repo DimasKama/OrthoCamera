@@ -11,7 +11,7 @@ repositories {
         url "https://maven.terraformersmc.com/releases/"
     }
     maven {
-        url "https://maven.terraformersmc.com/releases/"
+        url "https://api.modrinth.com/maven"
     }
 }
 
@@ -64,7 +64,7 @@ jar {
 }
 
 modrinth {
-    token = project.modrinth_forminotaur_token
+    //token = project.modrinth_forminotaur_token
     projectId = "orthocamera"
     versionNumber = project.mod_version
     versionType = "release" // This is the default -- can also be `beta` or `alpha`
