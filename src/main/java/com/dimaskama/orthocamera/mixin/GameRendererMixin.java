@@ -3,8 +3,8 @@ package com.dimaskama.orthocamera.mixin;
 import com.dimaskama.orthocamera.client.OrthoCamera;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.systems.ProjectionType;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.systems.VertexSorter;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.math.MathHelper;
@@ -35,15 +35,15 @@ abstract class GameRendererMixin {
             method = "renderWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/render/RenderTickCounter;ZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
+                    target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/util/ObjectAllocator;Lnet/minecraft/client/render/RenderTickCounter;ZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
 
             ),
-            index = 6
+            index = 7
     )
     private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled()) {
             Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickDelta(false), 0.0F);
-            RenderSystem.setProjectionMatrix(mat, VertexSorter.BY_Z);
+            RenderSystem.setProjectionMatrix(mat, ProjectionType.ORTHOGRAPHIC);
             return mat;
         }
         return projMat;

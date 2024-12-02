@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -23,14 +23,10 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "loader_version", project.loader_version
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+        expand "version": project.version
     }
 }
 
@@ -59,19 +55,23 @@ jar {
     }
 }
 
-modrinth {
-    token = project.modrinth_forminotaur_token
-    projectId = "orthocamera"
-    versionNumber = project.mod_version
-    versionType = "release" // This is the default -- can also be `beta` or `alpha`
-    changelog = project.changelog
-    uploadFile = remapJar
-    gameVersions = ["1.21"] // Must be an array, even with only one version
-    dependencies { // A special DSL for creating dependencies
-        // scope.type
-        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
-        // The type can either be `project` or `version`
-        required.project "fabric-api"
-        optional.project "modmenu"
+def env = System.getenv()
+def modrinthToken = env.MODRINTH_TOKEN
+if (modrinthToken) {
+    modrinth {
+        token = modrinthToken
+        projectId = "orthocamera"
+        versionNumber = project.mod_version
+        versionType = "release" // This is the default -- can also be `beta` or `alpha`
+        changelog = project.changelog
+        uploadFile = remapJar
+        gameVersions = ["1.21"] // Must be an array, even with only one version
+        dependencies { // A special DSL for creating dependencies
+            // scope.type
+            // The scope can be `required`, `optional`, `incompatible`, or `embedded`
+            // The type can either be `project` or `version`
+            required.project "fabric-api"
+            optional.project "modmenu"
+        }
     }
 }
