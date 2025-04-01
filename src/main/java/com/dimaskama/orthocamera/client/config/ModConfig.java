@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
 public class ModConfig extends JsonConfig {
+
     public static final float MIN_SCALE = 0.01F;
     public static final float MAX_SCALE = 10000.0F;
 
@@ -124,4 +125,5 @@ public class ModConfig extends JsonConfig {
         }
         setDirty(true);
     }
+
 }

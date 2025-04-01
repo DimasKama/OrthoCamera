@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import java.util.function.Consumer;
 
 public class ModConfigScreen extends Screen {
+
     private final Screen parent;
     private final ModConfig config = OrthoCamera.CONFIG;
 
@@ -131,6 +132,7 @@ public class ModConfigScreen extends Screen {
     }
 
     private class ConfigSliderWidget extends SliderWidget {
+
         private final String translationKey;
         private final float multiplyFactor;
         private final float addFactor;
@@ -168,5 +170,7 @@ public class ModConfigScreen extends Screen {
         private void updateExactValue() {
             exactValue = (float) value * multiplyFactor + addFactor;
         }
+
     }
+
 }

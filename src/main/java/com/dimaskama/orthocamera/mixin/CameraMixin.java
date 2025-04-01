@@ -18,4 +18,5 @@ public abstract class CameraMixin {
     private float moveByHeadZ(float value) {
         return OrthoCamera.isEnabled() ? 0.0F : value;
     }
+
 }

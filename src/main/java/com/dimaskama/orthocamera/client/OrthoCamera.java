@@ -16,6 +16,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class OrthoCamera implements ClientModInitializer {
+
     public static final String MOD_ID = "orthocamera";
     public static final Logger LOGGER = LogManager.getLogger("OrthoCamera");
     public static final ModConfig CONFIG = new ModConfig("config/orthocamera.json", "assets/orthocamera/default_config.json");
@@ -149,4 +150,5 @@ public class OrthoCamera implements ClientModInitializer {
                 MOD_ID
         );
     }
+
 }

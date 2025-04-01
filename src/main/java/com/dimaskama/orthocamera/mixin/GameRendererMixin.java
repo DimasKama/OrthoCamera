@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(GameRenderer.class)
 abstract class GameRendererMixin {
+
     @ModifyArg(
             method = "renderWorld",
             at = @At(
@@ -42,7 +43,7 @@ abstract class GameRendererMixin {
     )
     private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled()) {
-            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickDelta(false), 0.0F);
+            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickProgress(false), 0.0F);
             RenderSystem.setProjectionMatrix(mat, ProjectionType.ORTHOGRAPHIC);
             return mat;
         }
@@ -58,7 +59,7 @@ abstract class GameRendererMixin {
     )
     private Quaternionf modifyRotation(Quaternionf original, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled() && OrthoCamera.CONFIG.fixed) {
-            float delta = tickCounter.getTickDelta(false);
+            float delta = tickCounter.getTickProgress(false);
             return original.rotationXYZ(
                     OrthoCamera.CONFIG.getFixedPitch(delta) * MathHelper.RADIANS_PER_DEGREE,
                     OrthoCamera.CONFIG.getFixedYaw(delta) * MathHelper.RADIANS_PER_DEGREE - MathHelper.PI,
@@ -67,4 +68,5 @@ abstract class GameRendererMixin {
         }
         return original;
     }
+
 }
