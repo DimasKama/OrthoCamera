@@ -97,6 +97,12 @@ public class ModConfigScreen extends Screen {
                 90.0F, 0.0F,
                 v -> config.fixed_rotate_speed_x = v
         ));
+        y += 25;
+        addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.config.hide_world_border", textOfBool(config.hide_world_border)), button -> {
+            config.hide_world_border = !config.hide_world_border;
+            config.setDirty(true);
+            button.setMessage(Text.translatable("orthocamera.config.hide_world_border", textOfBool(config.hide_world_border)));
+        }).dimensions(leftX, y, optionWidth, 20).build());
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("orthocamera.reset_config"), button -> {
             config.reset();
