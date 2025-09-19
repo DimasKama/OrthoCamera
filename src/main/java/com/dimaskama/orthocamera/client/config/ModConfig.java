@@ -18,6 +18,7 @@ public class ModConfig extends JsonConfig {
 
     public boolean enabled = false;
     public boolean save_enabled_state;
+    public boolean hide_world_border;
     public float scale_x = 3.0F;
     public float scale_y = 3.0F;
     public float min_distance = -1000.0F;
