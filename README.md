@@ -4,7 +4,7 @@ Minecraft Fabric client-side mod. Adds Toggleable & configurable orthographic vi
 ![preview](preview/preview.gif)
 
 ## Download
-Releases can be found on [ModRinth](https://modrinth.com/mod/orthocamera/versions)
+Releases can be found on [Modrinth](https://modrinth.com/mod/orthocamera/versions)
 
 ## What is this
 In the perspective view (the default), objects which are far away are smaller than those nearby. In the orthographic view, all objects appear at the same scale.
