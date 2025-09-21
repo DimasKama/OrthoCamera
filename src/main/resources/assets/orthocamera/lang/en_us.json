@@ -18,6 +18,7 @@
   "orthocamera.unfixed": "Orthographic Camera Unfixed",
   "orthocamera.config.enabled": "Enabled: %s",
   "orthocamera.config.save_enabled_state": "Save enabled state: %s",
+  "orthocamera.config.hide_world_border": "Hide world border: %s",
   "orthocamera.config.scale_x": "X Scale: %s",
   "orthocamera.config.scale_y": "Y Scale: %s",
   "orthocamera.config.min_distance": "Minimum distance: %s",
