@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Matrix4f;
@@ -20,6 +21,7 @@ public class OrthoCamera implements ClientModInitializer {
     public static final String MOD_ID = "orthocamera";
     public static final Logger LOGGER = LogManager.getLogger("OrthoCamera");
     public static final ModConfig CONFIG = new ModConfig("config/orthocamera.json", "assets/orthocamera/default_config.json");
+    public static final KeyBinding.Category KEY_CATEGORY = new KeyBinding.Category(Identifier.of(MOD_ID, MOD_ID));
     private static final KeyBinding TOGGLE_KEY = createKeybinding("toggle", GLFW.GLFW_KEY_KP_4);
     private static final KeyBinding SCALE_INCREASE_KEY = createKeybinding("scale_increase", GLFW.GLFW_KEY_KP_SUBTRACT);
     private static final KeyBinding SCALE_DECREASE_KEY = createKeybinding("scale_decrease", GLFW.GLFW_KEY_KP_ADD);
@@ -147,7 +149,7 @@ public class OrthoCamera implements ClientModInitializer {
                 "orthocamera.key." + name,
                 InputUtil.Type.KEYSYM,
                 key,
-                MOD_ID
+                KEY_CATEGORY
         );
     }
 

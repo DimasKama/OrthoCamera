@@ -26,31 +26,16 @@ abstract class GameRendererMixin {
             method = "renderWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/WorldRenderer;setupFrustum(Lnet/minecraft/util/math/Vec3d;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"
-            ),
-            index = 2
-    )
-    private Matrix4f orthoFrustumProjMat(Matrix4f projMat) {
-        if (OrthoCamera.isEnabled()) {
-            return OrthoCamera.createOrthoMatrix(1.0F, 20.0F);
-        }
-        return projMat;
-    }
-
-    @ModifyArg(
-            method = "renderWorld",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/util/ObjectAllocator;Lnet/minecraft/client/render/RenderTickCounter;ZLnet/minecraft/client/render/Camera;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;Z)V"
+                    target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/util/ObjectAllocator;Lnet/minecraft/client/render/RenderTickCounter;ZLnet/minecraft/client/render/Camera;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Vector4f;Z)V"
 
             ),
-            index = 5
+            index = 6
     )
     private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) RenderTickCounter tickCounter) {
         if (OrthoCamera.isEnabled()) {
             Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickProgress(false), 0.0F);
             RenderSystem.setProjectionMatrix(worldProjectionMatrix.set(mat), ProjectionType.ORTHOGRAPHIC);
-            return mat;
+            return OrthoCamera.createOrthoMatrix(1.0F, 20.0F);
         }
         return projMat;
     }
