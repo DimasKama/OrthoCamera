@@ -3,24 +3,51 @@ package com.dimaskama.orthocamera.mixin;
 import com.dimaskama.orthocamera.client.OrthoCamera;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.blaze3d.systems.ProjectionType;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.RawProjectionMatrix;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(GameRenderer.class)
 abstract class GameRendererMixin {
 
-    @Shadow @Final private RawProjectionMatrix worldProjectionMatrix;
+    @ModifyArg(
+            method = "renderWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/RawProjectionMatrix;set(Lorg/joml/Matrix4f;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"
+            ),
+            index = 0
+    )
+    private Matrix4f modifyProjMat(Matrix4f original, @Local(argsOnly = true) RenderTickCounter tickCounter, @Local(ordinal = 0) LocalRef<Matrix4f> localMat) {
+        if (OrthoCamera.isEnabled()) {
+            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickProgress(false), 0.0F);
+            localMat.set(mat);
+            return mat;
+        }
+        return original;
+    }
+
+    @ModifyArg(
+            method = "renderWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/systems/ProjectionType;)V"
+            ),
+            index = 1
+    )
+    private ProjectionType modifyProjType(ProjectionType original) {
+        if (OrthoCamera.isEnabled()) {
+            return ProjectionType.ORTHOGRAPHIC;
+        }
+        return original;
+    }
 
     @ModifyArg(
             method = "renderWorld",
@@ -31,13 +58,11 @@ abstract class GameRendererMixin {
             ),
             index = 6
     )
-    private Matrix4f orthoProjMat(Matrix4f projMat, @Local(argsOnly = true) RenderTickCounter tickCounter) {
+    private Matrix4f frustumOorthoProjMat(Matrix4f original) {
         if (OrthoCamera.isEnabled()) {
-            Matrix4f mat = OrthoCamera.createOrthoMatrix(tickCounter.getTickProgress(false), 0.0F);
-            RenderSystem.setProjectionMatrix(worldProjectionMatrix.set(mat), ProjectionType.ORTHOGRAPHIC);
             return OrthoCamera.createOrthoMatrix(1.0F, 20.0F);
         }
-        return projMat;
+        return original;
     }
 
     @ModifyExpressionValue(
