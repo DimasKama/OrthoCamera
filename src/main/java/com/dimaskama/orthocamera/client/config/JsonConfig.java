@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 public abstract class JsonConfig implements Config {
+
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final transient String path;
     private final transient String defaultPath;
@@ -117,4 +118,5 @@ public abstract class JsonConfig implements Config {
             OrthoCamera.LOGGER.error("Can't call config constructor. ", e);
         }
     }
+
 }

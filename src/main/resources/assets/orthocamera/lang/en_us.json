@@ -2,6 +2,7 @@
   "modmenu.summaryTranslation.orthocamera": "OrthoCamera",
   "modmenu.descriptionTranslation.orthocamera": "Toggleable orthographic view",
   "orthocamera": "OrthoCamera",
+  "key.category.orthocamera.orthocamera": "OrthoCamera",
   "orthocamera.key.toggle": "Toggle Orthographic camera",
   "orthocamera.key.scale_increase": "Increase scale",
   "orthocamera.key.scale_decrease": "Decrease scale",
@@ -18,6 +19,7 @@
   "orthocamera.unfixed": "Orthographic Camera Unfixed",
   "orthocamera.config.enabled": "Enabled: %s",
   "orthocamera.config.save_enabled_state": "Save enabled state: %s",
+  "orthocamera.config.hide_world_border": "Hide world border: %s",
   "orthocamera.config.scale_x": "X Scale: %s",
   "orthocamera.config.scale_y": "Y Scale: %s",
   "orthocamera.config.min_distance": "Minimum distance: %s",
@@ -27,5 +29,6 @@
   "orthocamera.config.fixed_pitch": "Fixed camera pitch: %s",
   "orthocamera.config.fixed_rotate_speed_y": "Camera Y rotate speed: %s",
   "orthocamera.config.fixed_rotate_speed_x": "Camera X rotate speed: %s",
+  "orthocamera.config.auto_third_person": "Auto third person: %s",
   "orthocamera.reset_config": "Reset config"
 }
