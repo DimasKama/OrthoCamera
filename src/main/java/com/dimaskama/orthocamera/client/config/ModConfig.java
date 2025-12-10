@@ -1,9 +1,9 @@
 package com.dimaskama.orthocamera.client.config;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 public class ModConfig extends JsonConfig {
 
@@ -15,7 +15,7 @@ public class ModConfig extends JsonConfig {
     private transient float prevScaleY;
     private transient float prevFixedYaw;
     private transient float prevFixedPitch;
-    private transient Perspective prevPerspective;
+    private transient CameraType prevPerspective;
 
     public boolean enabled = false;
     public boolean save_enabled_state;
@@ -51,23 +51,23 @@ public class ModConfig extends JsonConfig {
     }
 
     public float getScaleX(float delta) {
-        return MathHelper.lerp(delta, prevScaleX, scale_x);
+        return Mth.lerp(delta, prevScaleX, scale_x);
     }
 
     public float getScaleY(float delta) {
-        return MathHelper.lerp(delta, prevScaleY, scale_y);
+        return Mth.lerp(delta, prevScaleY, scale_y);
     }
 
     public float getFixedYaw(float delta) {
-        return MathHelper.lerpAngleDegrees(delta, prevFixedYaw, fixed_yaw);
+        return Mth.rotLerp(delta, prevFixedYaw, fixed_yaw);
     }
 
     public float getFixedPitch(float delta) {
-        return MathHelper.lerpAngleDegrees(delta, prevFixedPitch, fixed_pitch);
+        return Mth.rotLerp(delta, prevFixedPitch, fixed_pitch);
     }
 
     public void setScaleX(float scale) {
-        scale = MathHelper.clamp(scale, MIN_SCALE, MAX_SCALE);
+        scale = Mth.clamp(scale, MIN_SCALE, MAX_SCALE);
         if (scale != scale_x) {
             scale_x = scale;
             setDirty(true);
@@ -75,7 +75,7 @@ public class ModConfig extends JsonConfig {
     }
 
     public void setScaleY(float scale) {
-        scale = MathHelper.clamp(scale, MIN_SCALE, MAX_SCALE);
+        scale = Mth.clamp(scale, MIN_SCALE, MAX_SCALE);
         if (scale != scale_y) {
             scale_y = scale;
             setDirty(true);
@@ -92,7 +92,7 @@ public class ModConfig extends JsonConfig {
     }
 
     public void setFixedPitch(float pitch) {
-        pitch = MathHelper.clamp(pitch, -90.0F, 90.0F);
+        pitch = Mth.clamp(pitch, -90.0F, 90.0F);
         if (pitch != fixed_pitch) {
             fixed_pitch = pitch;
             setDirty(true);
@@ -102,11 +102,11 @@ public class ModConfig extends JsonConfig {
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
         if (fixed) {
-            Entity entity = MinecraftClient.getInstance().getCameraEntity();
+            Entity entity = Minecraft.getInstance().getCameraEntity();
             if (entity != null) {
-                setFixedYaw(entity.getYaw() + 180);
+                setFixedYaw(entity.getYRot() + 180);
                 prevFixedYaw = fixed_yaw;
-                setFixedPitch(entity.getPitch());
+                setFixedPitch(entity.getXRot());
                 prevFixedPitch = fixed_pitch;
             }
         }
@@ -116,12 +116,12 @@ public class ModConfig extends JsonConfig {
     public void toggle() {
         enabled = !enabled;
         if (auto_third_person) {
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
             if (enabled) {
-                prevPerspective = client.options.getPerspective();
-                client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+                prevPerspective = client.options.getCameraType();
+                client.options.setCameraType(CameraType.THIRD_PERSON_BACK);
             } else if (prevPerspective != null) {
-                client.options.setPerspective(prevPerspective);
+                client.options.setCameraType(prevPerspective);
             }
         }
         setDirty(true);
