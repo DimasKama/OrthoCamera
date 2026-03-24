@@ -1,19 +1,20 @@
 package com.dimaskama.orthocamera.client;
 
+import com.dimaskama.orthocamera.duck.ProjectionDuck;
 import com.dimaskama.orthocamera.client.config.ModConfig;
 import com.dimaskama.orthocamera.client.config.ModConfigScreen;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Projection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class OrthoCamera implements ClientModInitializer {
@@ -41,15 +42,15 @@ public class OrthoCamera implements ClientModInitializer {
     public void onInitializeClient() {
         CONFIG.loadOrCreate();
         CONFIG.enabled &= CONFIG.save_enabled_state;
-        KeyBindingHelper.registerKeyBinding(TOGGLE_KEY);
-        KeyBindingHelper.registerKeyBinding(SCALE_INCREASE_KEY);
-        KeyBindingHelper.registerKeyBinding(SCALE_DECREASE_KEY);
-        KeyBindingHelper.registerKeyBinding(OPEN_OPTIONS_KEY);
-        KeyBindingHelper.registerKeyBinding(FIX_CAMERA_KEY);
-        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_UP_KEY);
-        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_DOWN_KEY);
-        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_LEFT_KEY);
-        KeyBindingHelper.registerKeyBinding(FIXED_CAMERA_ROTATE_RIGHT_KEY);
+        KeyMappingHelper.registerKeyMapping(TOGGLE_KEY);
+        KeyMappingHelper.registerKeyMapping(SCALE_INCREASE_KEY);
+        KeyMappingHelper.registerKeyMapping(SCALE_DECREASE_KEY);
+        KeyMappingHelper.registerKeyMapping(OPEN_OPTIONS_KEY);
+        KeyMappingHelper.registerKeyMapping(FIX_CAMERA_KEY);
+        KeyMappingHelper.registerKeyMapping(FIXED_CAMERA_ROTATE_UP_KEY);
+        KeyMappingHelper.registerKeyMapping(FIXED_CAMERA_ROTATE_DOWN_KEY);
+        KeyMappingHelper.registerKeyMapping(FIXED_CAMERA_ROTATE_LEFT_KEY);
+        KeyMappingHelper.registerKeyMapping(FIXED_CAMERA_ROTATE_RIGHT_KEY);
         ClientTickEvents.START_CLIENT_TICK.register(c -> CONFIG.tick());
         ClientTickEvents.END_CLIENT_TICK.register(this::handleInput);
         ClientLifecycleEvents.CLIENT_STOPPING.register(this::onClientStopping);
@@ -99,7 +100,7 @@ public class OrthoCamera implements ClientModInitializer {
             CONFIG.setFixed(!CONFIG.fixed);
         }
         if (!messageSent && fixPressed) {
-            client.getChatListener().handleSystemMessage(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT, true);
+            client.getChatListener().handleOverlay(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT);
         }
         if (FIXED_CAMERA_ROTATE_LEFT_KEY.isDown()) {
             CONFIG.setFixedYaw(CONFIG.fixed_yaw + CONFIG.fixed_rotate_speed_y);
@@ -132,16 +133,12 @@ public class OrthoCamera implements ClientModInitializer {
         return CONFIG.enabled;
     }
 
-    public static Matrix4f createOrthoMatrix(float delta, float minScale) {
+    public static void setupOrthoMatrix(Projection projection, float tickDelta) {
         Minecraft client = Minecraft.getInstance();
-        float width = Math.max(minScale, CONFIG.getScaleX(delta)
-                * client.getWindow().getWidth() / client.getWindow().getHeight());
-        float height = Math.max(minScale, CONFIG.getScaleY(delta));
-        return new Matrix4f().setOrtho(
-                -width, width,
-                -height, height,
-                CONFIG.min_distance, CONFIG.max_distance
-        );
+        float width = CONFIG.getScaleX(tickDelta) * client.getWindow().getWidth() / client.getWindow().getHeight();
+        float height = CONFIG.getScaleY(tickDelta);
+        projection.setupOrtho(CONFIG.min_distance, CONFIG.max_distance, 2 * width, 2 * height, false);
+        ((ProjectionDuck) projection).orthocamera_setIsOrthocamera(true);
     }
 
     private static KeyMapping createKeybinding(String name, int key) {

@@ -7,7 +7,9 @@
   ],
   "client": [
     "CameraMixin",
+    "FrustumMixin",
     "GameRendererMixin",
+    "ProjectionMixin",
     "WorldBorderRenderingMixin"
   ],
   "injectors": {
