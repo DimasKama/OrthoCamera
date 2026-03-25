@@ -1,6 +1,6 @@
 plugins {
     id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
-    id "com.modrinth.minotaur" version "2.+"
+    id "com.modrinth.minotaur" version "2.9.0"
 }
 
 version = project.mod_version
@@ -61,7 +61,7 @@ if (modrinthToken) {
         versionType = "release" // This is the default -- can also be `beta` or `alpha`
         changelog = project.changelog
         uploadFile = jar
-        gameVersions = ["21.6"] // Must be an array, even with only one version
+        gameVersions = ["26.1"] // Must be an array, even with only one version
         dependencies { // A special DSL for creating dependencies
             // scope.type
             // The scope can be `required`, `optional`, `incompatible`, or `embedded`
