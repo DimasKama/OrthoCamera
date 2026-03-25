@@ -1,6 +1,6 @@
 plugins {
     id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
-    id "com.modrinth.minotaur" version "2.9.0"
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
