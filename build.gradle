@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
+    id 'net.fabricmc.fabric-loom' version '1.17-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -14,6 +14,16 @@ repositories {
     maven {
         url "https://maven.terraformersmc.com/releases/"
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 dependencies {
@@ -23,6 +33,7 @@ dependencies {
 
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    implementation "maven.modrinth:sodium:mc26.2-0.9.0-fabric"
 }
 
 processResources {
@@ -61,7 +72,7 @@ if (modrinthToken) {
         versionType = "release" // This is the default -- can also be `beta` or `alpha`
         changelog = project.changelog
         uploadFile = jar
-        gameVersions = ["26.1"] // Must be an array, even with only one version
+        gameVersions = ["26.2"] // Must be an array, even with only one version
         dependencies { // A special DSL for creating dependencies
             // scope.type
             // The scope can be `required`, `optional`, `incompatible`, or `embedded`

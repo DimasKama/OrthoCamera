@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class OrthoCamera implements ClientModInitializer {
@@ -60,10 +61,7 @@ public class OrthoCamera implements ClientModInitializer {
         boolean messageSent = false;
         while (TOGGLE_KEY.consumeClick()) {
             CONFIG.toggle();
-            client.getChatListener().handleSystemMessage(
-                    CONFIG.enabled ? ENABLED_TEXT : DISABLED_TEXT,
-                    true
-            );
+            client.gui.chatListener().handleOverlay(CONFIG.enabled ? ENABLED_TEXT : DISABLED_TEXT);
             messageSent = true;
         }
         boolean on = CONFIG.enabled;
@@ -85,13 +83,10 @@ public class OrthoCamera implements ClientModInitializer {
             }
         }
         if (scaleChanged && !messageSent) {
-            client.getChatListener().handleSystemMessage(
-                    Component.translatable(
-                            "orthocamera.scale",
-                            String.format("%.1f", CONFIG.scale_x), String.format("%.1f", CONFIG.scale_y)
-                    ),
-                    true
-            );
+            client.gui.chatListener().handleOverlay(Component.translatable(
+                    "orthocamera.scale",
+                    String.format("%.1f", CONFIG.scale_x), String.format("%.1f", CONFIG.scale_y)
+            ));
             messageSent = true;
         }
         boolean fixPressed = false;
@@ -100,7 +95,7 @@ public class OrthoCamera implements ClientModInitializer {
             CONFIG.setFixed(!CONFIG.fixed);
         }
         if (!messageSent && fixPressed) {
-            client.getChatListener().handleOverlay(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT);
+            client.gui.chatListener().handleOverlay(CONFIG.fixed ? FIXED_TEXT : UNFIXED_TEXT);
         }
         if (FIXED_CAMERA_ROTATE_LEFT_KEY.isDown()) {
             CONFIG.setFixedYaw(CONFIG.fixed_yaw + CONFIG.fixed_rotate_speed_y);
@@ -119,7 +114,7 @@ public class OrthoCamera implements ClientModInitializer {
             openScreen = true;
         }
         if (openScreen) {
-            client.setScreen(new ModConfigScreen(null));
+            client.gui.setScreen(new ModConfigScreen(null));
         }
     }
 
@@ -133,11 +128,19 @@ public class OrthoCamera implements ClientModInitializer {
         return CONFIG.enabled;
     }
 
+    public static Matrix4f createOrthoMatrixForCulling() {
+        Minecraft client = Minecraft.getInstance();
+        float width = CONFIG.scale_x * client.getWindow().getWidth() / client.getWindow().getHeight();
+        float height = CONFIG.scale_y;
+        return new Matrix4f().setOrtho(-3.0F * width, 3.0F * width, -3.0F * height, 3.0F * height, CONFIG.min_distance, CONFIG.max_distance);
+    }
+
     public static void setupOrthoMatrix(Projection projection, float tickDelta) {
         Minecraft client = Minecraft.getInstance();
         float width = CONFIG.getScaleX(tickDelta) * client.getWindow().getWidth() / client.getWindow().getHeight();
         float height = CONFIG.getScaleY(tickDelta);
-        projection.setupOrtho(CONFIG.min_distance, CONFIG.max_distance, 2 * width, 2 * height, false);
+        float len = CONFIG.max_distance - CONFIG.min_distance;
+        projection.setupOrtho(len, -0.5F * len, 2 * width, 2 * height, false);
         ((ProjectionDuck) projection).orthocamera_setIsOrthocamera(true);
     }
 

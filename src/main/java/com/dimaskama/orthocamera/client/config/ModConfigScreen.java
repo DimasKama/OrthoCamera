@@ -134,7 +134,7 @@ public class ModConfigScreen extends Screen {
             config.save();
             config.setDirty(false);
         }
-        minecraft.setScreen(parent);
+        minecraft.gui.setScreen(parent);
     }
 
     private class ConfigSliderWidget extends AbstractSliderButton {

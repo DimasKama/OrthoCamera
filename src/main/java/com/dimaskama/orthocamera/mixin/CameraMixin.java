@@ -7,11 +7,13 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.Projection;
 import net.minecraft.client.renderer.culling.Frustum;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Camera.class)
@@ -66,6 +68,17 @@ public abstract class CameraMixin {
     private void prepareCullFrustumTail(CallbackInfo ci) {
         if (OrthoCamera.isEnabled()) {
             ((FrustumDuck) cullFrustum).orthocamera_setIsOrthocamera(true);
+        }
+    }
+
+    @Inject(
+            method = "createProjectionMatrixForCulling",
+            at = @At("RETURN"),
+            cancellable = true
+    )
+    private void modifyMatrixForCulling(CallbackInfoReturnable<Matrix4f> cir) {
+        if (OrthoCamera.isEnabled()) {
+            cir.setReturnValue(OrthoCamera.createOrthoMatrixForCulling());
         }
     }
 
