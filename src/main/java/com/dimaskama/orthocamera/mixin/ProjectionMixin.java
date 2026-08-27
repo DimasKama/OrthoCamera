@@ -1,15 +1,15 @@
 package com.dimaskama.orthocamera.mixin;
 
 import com.dimaskama.orthocamera.duck.ProjectionDuck;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.renderer.Projection;
-import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Projection.class)
 abstract class ProjectionMixin implements ProjectionDuck {
@@ -44,19 +44,23 @@ abstract class ProjectionMixin implements ProjectionDuck {
         orthocamera_setIsOrthocamera(false);
     }
 
-    @ModifyExpressionValue(
+    @ModifyArgs(
             method = "getMatrix",
             at = @At(
                     value = "INVOKE",
                     target = "Lorg/joml/Matrix4f;setOrtho(FFFFFFZ)Lorg/joml/Matrix4f;"
             )
     )
-    private Matrix4f modifyMatrix(Matrix4f original) {
-        return orthocamera_isOrthocamera() ? original.setOrtho(
-                -width, width,
-                -height, height,
-                zNear, zFar
-        ) : original;
+    private void modifyMatrix(Args args) {
+        if (orthocamera_isOrthocamera()) {
+            args.set(0, -width);
+            args.set(1, width);
+            args.set(2, -height);
+            args.set(3, height);
+            args.set(4, zNear);
+            args.set(5, zFar);
+            // Keep argument 6 (zZeroToOne) supplied by Minecraft intact.
+        }
     }
 
 }
