@@ -1,6 +1,7 @@
 package com.dimaskama.orthocamera.mixin;
 
 import com.dimaskama.orthocamera.client.OrthoCamera;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import net.minecraft.client.renderer.WorldBorderRenderer;
 import net.minecraft.client.renderer.state.level.WorldBorderRenderState;
 import net.minecraft.world.phys.Vec3;
@@ -17,7 +18,7 @@ public class WorldBorderRenderingMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private void render(WorldBorderRenderState state, Vec3 cameraPos, double viewDistanceBlocks, double farPlaneDistance, CallbackInfo ci) {
+    private void render(WorldBorderRenderState state, RenderPass renderPass, Vec3 cameraPos, double farPlaneDistance, CallbackInfo ci) {
         if (!OrthoCamera.isEnabled() || !OrthoCamera.CONFIG.hide_world_border) {
             return;
         }

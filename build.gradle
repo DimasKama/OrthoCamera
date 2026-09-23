@@ -33,7 +33,7 @@ dependencies {
 
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    implementation "maven.modrinth:sodium:mc26.2-0.9.0-fabric"
+    implementation "maven.modrinth:sodium:mc26.3-0.9.2-fabric"
 }
 
 processResources {
@@ -72,7 +72,7 @@ if (modrinthToken) {
         versionType = "release" // This is the default -- can also be `beta` or `alpha`
         changelog = project.changelog
         uploadFile = jar
-        gameVersions = ["26.2"] // Must be an array, even with only one version
+        gameVersions = ["26.3"] // Must be an array, even with only one version
         dependencies { // A special DSL for creating dependencies
             // scope.type
             // The scope can be `required`, `optional`, `incompatible`, or `embedded`

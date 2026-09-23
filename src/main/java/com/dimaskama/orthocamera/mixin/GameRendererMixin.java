@@ -11,10 +11,10 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 abstract class GameRendererMixin {
 
     @ModifyArg(
-            method = "renderLevel",
+            method = {"renderLevel", "render3dHud"},
             at = @At(
                     value = "INVOKE",
-                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V"
+                    target = "Lcom/mojang/blaze3d/systems/RenderSystem;setProjectionMatrix(Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;Lcom/mojang/blaze3d/ProjectionType;)V"
             ),
             index = 1
     )

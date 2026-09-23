@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Matrix4f;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLScancode;
 
 public class OrthoCamera implements ClientModInitializer {
 
@@ -24,15 +24,15 @@ public class OrthoCamera implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("OrthoCamera");
     public static final ModConfig CONFIG = new ModConfig("config/orthocamera.json", "assets/orthocamera/default_config.json");
     public static final KeyMapping.Category KEY_CATEGORY = new KeyMapping.Category(Identifier.fromNamespaceAndPath(MOD_ID, MOD_ID));
-    private static final KeyMapping TOGGLE_KEY = createKeybinding("toggle", GLFW.GLFW_KEY_KP_4);
-    private static final KeyMapping SCALE_INCREASE_KEY = createKeybinding("scale_increase", GLFW.GLFW_KEY_KP_SUBTRACT);
-    private static final KeyMapping SCALE_DECREASE_KEY = createKeybinding("scale_decrease", GLFW.GLFW_KEY_KP_ADD);
-    private static final KeyMapping OPEN_OPTIONS_KEY = createKeybinding("options", -1);
-    private static final KeyMapping FIX_CAMERA_KEY = createKeybinding("fix_camera", GLFW.GLFW_KEY_KP_MULTIPLY);
-    private static final KeyMapping FIXED_CAMERA_ROTATE_UP_KEY = createKeybinding("fixed_camera_rotate_up", -1);
-    private static final KeyMapping FIXED_CAMERA_ROTATE_DOWN_KEY = createKeybinding("fixed_camera_rotate_down", -1);
-    private static final KeyMapping FIXED_CAMERA_ROTATE_LEFT_KEY = createKeybinding("fixed_camera_rotate_left", -1);
-    private static final KeyMapping FIXED_CAMERA_ROTATE_RIGHT_KEY = createKeybinding("fixed_camera_rotate_right", -1);
+    private static final KeyMapping TOGGLE_KEY = createKeybinding("toggle", SDLScancode.SDL_SCANCODE_KP_4);
+    private static final KeyMapping SCALE_INCREASE_KEY = createKeybinding("scale_increase", SDLScancode.SDL_SCANCODE_KP_MINUS);
+    private static final KeyMapping SCALE_DECREASE_KEY = createKeybinding("scale_decrease", SDLScancode.SDL_SCANCODE_KP_PLUS);
+    private static final KeyMapping OPEN_OPTIONS_KEY = createKeybinding("options", InputConstants.UNKNOWN.getValue());
+    private static final KeyMapping FIX_CAMERA_KEY = createKeybinding("fix_camera", SDLScancode.SDL_SCANCODE_KP_MULTIPLY);
+    private static final KeyMapping FIXED_CAMERA_ROTATE_UP_KEY = createKeybinding("fixed_camera_rotate_up", InputConstants.UNKNOWN.getValue());
+    private static final KeyMapping FIXED_CAMERA_ROTATE_DOWN_KEY = createKeybinding("fixed_camera_rotate_down", InputConstants.UNKNOWN.getValue());
+    private static final KeyMapping FIXED_CAMERA_ROTATE_LEFT_KEY = createKeybinding("fixed_camera_rotate_left", InputConstants.UNKNOWN.getValue());
+    private static final KeyMapping FIXED_CAMERA_ROTATE_RIGHT_KEY = createKeybinding("fixed_camera_rotate_right", InputConstants.UNKNOWN.getValue());
     private static final Component ENABLED_TEXT = Component.translatable("orthocamera.enabled");
     private static final Component DISABLED_TEXT = Component.translatable("orthocamera.disabled");
     private static final Component FIXED_TEXT = Component.translatable("orthocamera.fixed");
@@ -147,7 +147,7 @@ public class OrthoCamera implements ClientModInitializer {
     private static KeyMapping createKeybinding(String name, int key) {
         return new KeyMapping(
                 "orthocamera.key." + name,
-                InputConstants.Type.KEYSYM,
+                InputConstants.Type.KEYBOARD,
                 key,
                 KEY_CATEGORY
         );
